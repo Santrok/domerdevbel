@@ -18,9 +18,11 @@ from .serializers import (RegionSerializer,
 def get_main_page(request):
     advertisement_queryset = Advertisement.objects.filter(is_active=True,
                                                           moderation=True).order_by("-date_of_create")
+    category_queryset = Category.objects.filter(level=0)
 
     context = {
         "adver": advertisement_queryset,
+        "category": category_queryset
 
     }
     return render(request, 'param1.html', context)
