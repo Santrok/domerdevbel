@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="header">
+
+</div>
+<div class="nav">
+
+</div>
+<div class="find">
+
+</div>
+<div class="main" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    {% for cart in adver %}
+    <div class="cart" style="display: flex; width: 100%; padding: 20px; gap: 10px;">
+        <div class="cart_datetime"  style="align-items: center;">
+            {% if cart.date_of_create.date == date_today %}
+            <div>Сегодня</div>
+            {% elif cart.date_of_create.date == date_yesterday %}
+            <div>Вчера</div>
+            {% else %}
+            <div>{{cart.date_of_create|date:"d b. Y"}}</div>
+            {% endif %}
+            <div>{{cart.date_of_create|date:"H:i"}}</div>
+        </div>
+        <div class="cart__img" style="max-height: 100px; max-width: 140px">
+            <img src="{{cart.previous_image.url}}" alt="{{cart.previous_image.url}}" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="cart_info">
+            <div>{{cart.title}}</div>
+            <div>{{cart.price}}</div>
+            <div>{{cart.category}}</div>
+            <div>{{cart.bearer}}</div>
+            <div>{{cart.city}}</div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Ok</button>
+</form>
+</body>
+</html>

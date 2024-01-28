@@ -1,0 +1,53 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/param3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+    <title>Document</title>
+</head>
+<body>
+<div class="main">
+    <div class="container">
+        <div class="cart_list">
+            {% for cart in adver %}
+            <div class="cart">
+                <div class="cart_img">
+                    <img src="/static/img/photography.png" alt="">
+                </div>
+                <div class="cart_info">
+                    <div class="cart_info_link_date_category">
+                        <a href="#" class="cart_link">{{cart.title}}</a>
+                        <div class="cart_info_date_category">
+                            {% if cart.date_of_create.date == date_today %}
+                            <p>Сегодня</p>
+                            {% elif cart.date_of_create.date == date_yesterday %}
+                            <p>Вчера</p>
+                            {% else %}
+                            <p>{{cart.date_of_create|date:"d b. Y H:i"}}</p>
+                            {% endif %}
+                            <p>{{cart.category}}</p>
+                        </div>
+                    </div>
+
+                    <p class="cart_info_region">{{cart.city}}</p>
+                    <p class="cart_info_price">{{cart.price}} руб.</p>
+
+                </div>
+                <div class="cart_favorite_button">
+                    <img class="favorite_img" id="{{cart.id}}" src="/static/img/favorite.png" alt="">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<script src="{%  static 'js/advertisement.js' %}"></script>
+</body>
+</html>

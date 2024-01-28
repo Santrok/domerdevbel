@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<button class="login_button">Вход</button>
+<button class="register_button">Регистрация</button>
+<form action="" method="POST" class="popup_login">
+    {% csrf_token %}
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="button" value="Войти" id="form_login_button">
+</form>
+<form action="" method="POST" class="popup_register">
+    {% csrf_token %}
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="button" id="form_register_button" value="регистрация">
+</form>
+
+<script src="{%  static 'js/modals.js' %}"></script>
+
+</body>
+</html>

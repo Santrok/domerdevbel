@@ -1,0 +1,100 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/null_for_templates.css' %}">
+    <title>Document</title>
+</head>
+<body>
+<div class="sort_bar">
+    <div class="container">
+        <div class="sort_wrapper">
+            <div class="number_of_advertisements">
+                Найдено: 34000
+            </div>
+            <div class="type_sorted">
+                <a href="#" class="type_sorted_img">
+                    <img src="/static/img/sort1.png" alt="">
+                </a>
+                <a href="#" class="type_sorted_img">
+                    <img src="/static/img/sort2.png" alt="">
+                </a>
+                <a href="#" class="type_sorted_img">
+                    <img src="/static/img/sort3.png" alt="">
+                </a>
+            </div>
+            <div class="number_of_advertisements_per_page">
+                <p>
+                    Выводить по:
+                </p>
+                <a href="">
+                    30
+                </a>
+                <a href="">
+                    60
+                </a>
+                <a href="">
+                    90
+                </a>
+            </div>
+            <div class="sorted_by_price_or_date">
+                <p>
+                    Сортировать
+                </p>
+                <a href="">
+                    Дата
+                </a>
+                <a href="">
+                    Цена
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main">
+    <div class="container">
+        <div class="cart_list">
+            {% for cart in adver %}
+            <div class="cart">
+                <div class="cart_img">
+                    <img src="{{cart.previous_image.url}}" alt="{{cart.previous_image.url}}">
+                </div>
+                <div class="cart_favorite_button">
+                    <img class="favorite_img" id="{{cart.id}}" src="/static/img/favorite.png" alt="">
+                </div>
+                <div class="cart_info">
+                    <a href="#" class="cart_link">{{cart.title}}</a>
+                    <p class="cart_info_price">{{cart.price}} руб.</p>
+                    <p>{{cart.category}}</p>
+                    <p class="cart_info_bearer">{{cart.bearer}}</p>
+                    <p>{{cart.city}}</p>
+                        {% if cart.date_of_create.date == date_today %}
+                    <p>Сегодня</p>
+                    {% elif cart.date_of_create.date == date_yesterday %}
+                    <p>Вчера</p>
+                    {% else %}
+                    <p>{{cart.date_of_create|date:"d b. Y H:i"}}</p>
+                    {% endif %}
+
+                </div>
+            </div>
+            {% endfor %}
+            <div class="vip_cart">
+                {%  %}
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src="{%  static 'js/advertisement.js' %}"></script>
+</body>
+</html>
