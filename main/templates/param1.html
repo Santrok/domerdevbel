@@ -16,9 +16,9 @@
         <div class="category_wrapper">
             <div class="category_list">
                 {% for cat in category %}
-                    <a href="#" class="category">
-                        {{ cat.title }}, 99999
-                    </a>
+                <a href="{% url 'adver_by_category' cat.slug %}" class="category">
+                    {{ cat.title }}, {{cat.num_adver}}
+                </a>
                 {% endfor %}
             </div>
         </div>
@@ -31,32 +31,29 @@
     <div class="container">
         <div class="sort_wrapper">
             <div class="number_of_advertisements">
-                Найдено: 999999
+                Найдено: {{adver.count}}
             </div>
             <div class="number_of_advertisements_per_page">
                 <p>
                     Выводить по:
                 </p>
-                <a href="">
+                <a href="?sort=3">
                     30
                 </a>
-                <a href="">
+                <a href="?sort=6">
                     60
                 </a>
-                <a href="">
+                <a href="?sort=9">
                     90
                 </a>
             </div>
 
             <div class="type_sorted">
-                <a href="#" class="type_sorted_img">
+                <a href="{% url 'param2' %}" class="type_sorted_img">
                     <img src="/static/img/sort1.png" alt="">
                 </a>
-                <a href="#" class="type_sorted_img">
+                <a href="{% url 'param1' %}" class="type_sorted_img">
                     <img src="/static/img/sort2.png" alt="">
-                </a>
-                <a href="#" class="type_sorted_img">
-                    <img src="/static/img/sort3.png" alt="">
                 </a>
             </div>
 
@@ -74,6 +71,7 @@
         </div>
     </div>
 </div>
+{% block content %}
 <div class="main">
     <div class="container">
         <div class="cart_list_wrapper">
@@ -89,30 +87,30 @@
             </div>
 
             <div class="cart_list">
-                {% for cart in adver %}
-                    <div class="cart">
-                        <div class="cart_img">
-                            <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
-                        </div>
-                        <div class="cart_favorite_button">
-                            <img class="favorite_img" id="{{ cart.id }}" src="/static/img/favorite.png" alt="">
-                        </div>
-                        <div class="cart_info">
-                            <a href="#" class="cart_link">{{ cart.title }}</a>
-                            <p class="cart_info_price">{{ cart.price }} руб.</p>
-                            <p>{{ cart.category }}</p>
-                            <p class="cart_info_bearer">{{ cart.bearer }}</p>
-                            <p>{{ cart.city }}</p>
-                            {% if cart.date_of_create.date == date_today %}
-                                <p>Сегодня</p>
-                            {% elif cart.date_of_create.date == date_yesterday %}
-                                <p>Вчера</p>
-                            {% else %}
-                                <p>{{ cart.date_of_create|date:"d b. Y H:i" }}</p>
-                            {% endif %}
-
-                        </div>
+                {% for cart in page_obj %}
+                <div class="cart">
+                    <div class="cart_img">
+                        <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
                     </div>
+                    <div class="cart_favorite_button">
+                        <img class="favorite_img" id="{{ cart.id }}" src="/static/img/favorite.png" alt="">
+                    </div>
+                    <div class="cart_info">
+                        <a href="#" class="cart_link">{{ cart.title }}</a>
+                        <p class="cart_info_price">{{ cart.price }} руб.</p>
+                        <p>{{ cart.category }}</p>
+                        <p class="cart_info_bearer">{{ cart.bearer }}</p>
+                        <p>{{ cart.city }}</p>
+                        {% if cart.date_of_create.date == date_today %}
+                        <p>Сегодня</p>
+                        {% elif cart.date_of_create.date == date_yesterday %}
+                        <p>Вчера</p>
+                        {% else %}
+                        <p>{{ cart.date_of_create|date:"d b. Y H:i" }}</p>
+                        {% endif %}
+
+                    </div>
+                </div>
                 {% endfor %}
 
             </div>
@@ -123,7 +121,34 @@
 
 
 </div>
-
+{% endblock %}
+<div class="paginator">
+    <div class="container">
+        <div class="paginator_wrapper">
+            <ul>
+                {% if page_obj.has_previous %}
+                <li class="">
+                    <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                </li>
+                {% endif %}
+                {% for page in page_obj.paginator.page_range %}
+                {% if page_obj.number == page %}
+                <li class="page-num page-num-selected">{{ page }}</li>
+                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                <li class="page-num">
+                    <a href="?page={{ page }}">{{ page }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="">
+                    <a href="?page={{ page_obj.next_page_number }}">></a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
 
 
 <script src="{% static 'js/advertisement.js' %}"></script>
