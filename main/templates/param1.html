@@ -61,10 +61,10 @@
                 <p>
                     Сортировать
                 </p>
-                <a href="">
+                <a href="?date={{date}}">
                     Дата
                 </a>
-                <a href="">
+                <a href="?price={{date}}">
                     Цена
                 </a>
             </div>
@@ -89,9 +89,9 @@
             <div class="cart_list">
                 {% for cart in page_obj %}
                 <div class="cart">
-                    <div class="cart_img">
+                    <a href="#" class="cart_img">
                         <img src="{{ cart.previous_image.url }}" alt="{{ cart.previous_image.url }}">
-                    </div>
+                    </a>
                     <div class="cart_favorite_button">
                         <img class="favorite_img" id="{{ cart.id }}" src="/static/img/favorite.png" alt="">
                     </div>
