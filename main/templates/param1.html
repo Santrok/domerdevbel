@@ -16,9 +16,11 @@
         <div class="category_wrapper">
             <div class="category_list">
                 {% for cat in category %}
+                    {% if cat.level == 0 %}
                 <a href="{% url 'adver_by_category' cat.slug %}" class="category">
                     {{ cat.title }}, {{cat.num_adver}}
                 </a>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework.generics import ListAPIView
@@ -61,14 +61,36 @@ def get_advertisement_by_category(request, category_slug):
     if request.GET.get('sort'):
         sort_for_paginator = sorted_by_number(request.GET.get('sort'))
 
-    category_queryset = Category.objects.filter(level=0).annotate(num_adver=Count('advertisement'))
-    category = get_object_or_404(category_queryset, slug=category_slug)
-    x = category.get_descendants().annotate(num_adver=Count('advertisement'))
-    print(x.count())
-    advertisement_queryset = Advertisement.objects.filter(category=category, is_active=True,
+    category_queryset = Category.objects.annotate(num_adver=Count('advertisement'))
+    category = get_object_or_404(category_queryset.filter(level=0), slug=category_slug)
+    cat = category_queryset.filter(level=0)
+    # category_sum = cat.node.is_root_node()
+    print(dir(cat))
+    # print(category_sum)
+    # print(category_sum)
+    print(cat)
+
+    for i in category_queryset:
+        print(i.get_root())
+    # #     print(i.advertisement_set.all())
+    #     sam = i.get_descendants(include_self=False)
+    #     print(sam)
+    #     for z in sam:
+    #         for x in z.advertisement_set.all():
+    #             print(x)
+
+    # roots = Category.objects.add_related_count(Category.objects.root_nodes(), Advertisement, 'category', 'num_adver', cumulative=True)
+    # print(roots)
+
+
+
+
+    # x = category.get_descendants().annotate(num_adver=Count('advertisement'))
+    # print(x.count())
+    advertisement_queryset = Advertisement.objects.filter(category__tree_id=category.id, is_active=True,
                                                           moderation=True).select_related(
         'category', 'city').order_by(order_by)
-
+    # print(advertisement_queryset[0].category_id)
     page_obj = variables_for_paginator(advertisement_queryset, request.GET.get('page'), sort_for_paginator)
 
     context = {
